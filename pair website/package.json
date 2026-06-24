@@ -1,0 +1,14 @@
+{
+  "name": "macha-pair-system",
+  "version": "1.0.0",
+  "description": "Premium Session Generator Site by DJ MACHA 255",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.6.0",
+    "express": "^4.19.2",
+    "pino": "^9.1.0"
+  }
+}
