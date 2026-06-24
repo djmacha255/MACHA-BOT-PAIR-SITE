@@ -3,48 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MACHA PAIR - PREMIUM SYSTEM</title>
+    <title>MACHA-AI PREMIUM PAIR SYSTEM</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: radial-gradient(circle, #0d1b2a 0%, #010811 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 180, 216, 0.2); border-radius: 20px; padding: 30px; width: 100%; max-width: 450px; box-shadow: 0 0 30px rgba(0, 119, 182, 0.2); text-align: center; backdrop-filter: blur(10px); }
-        h1 { color: #00b4d8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; font-size: 28px; text-shadow: 0 0 10px rgba(0, 180, 216, 0.5); }
-        .subtitle { font-size: 13px; color: #90e0ef; margin-bottom: 25px; opacity: 0.7; }
-        p { font-size: 15px; margin-bottom: 15px; color: #e2e8f0; }
-        input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 180, 216, 0.3); border-radius: 12px; color: #fff; font-size: 16px; text-align: center; margin-bottom: 15px; outline: none; }
-        button { width: 100%; padding: 15px; background: #0077b6; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        button:hover { background: #00b4d8; }
-        .code-box { display: none; margin-top: 25px; background: rgba(0, 119, 182, 0.1); border: 1px dashed #00b4d8; padding: 20px; border-radius: 12px; }
-        .pairing-code { font-size: 26px; font-weight: bold; color: #fff; letter-spacing: 3px; margin-bottom: 15px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
+        body { background: #030712; color: #f3f4f6; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; overflow-x: hidden; }
+        
+        /* DJ Glow Background */
+        body::before { content: ''; position: absolute; width: 300px; height: 300px; background: #00b4d8; filter: blur(150px); top: 10%; left: 10%; z-index: -1; opacity: 0.3; }
+        body::after { content: ''; position: absolute; width: 300px; height: 300px; background: #7209b7; filter: blur(150px); bottom: 10%; right: 10%; z-index: -1; opacity: 0.3; }
+
+        .container { background: rgba(10, 15, 30, 0.7); border: 2px solid #00b4d8; border-radius: 24px; padding: 40px 30px; width: 100%; max-width: 480px; box-shadow: 0 0 40px rgba(0, 180, 216, 0.25); backdrop-filter: blur(20px); text-align: center; position: relative; }
+        
+        /* DJ Equalizer Animation Line */
+        .equalizer { display: flex; justify-content: center; gap: 4px; margin-bottom: 20px; height: 30px; align-items: flex-end; }
+        .bar { width: 4px; height: 10px; background: #00b4d8; animation: bounce 1s ease-in-out infinite; alternate; }
+        .bar:nth-child(2) { animation-delay: 0.2s; height: 20px; background: #7209b7; }
+        .bar:nth-child(3) { animation-delay: 0.4s; height: 25px; }
+        .bar:nth-child(4) { animation-delay: 0.6s; height: 15px; background: #7209b7; }
+        @keyframes bounce { 0%, 100% { height: 5px; } 50% { height: 30px; } }
+
+        h1 { font-size: 32px; color: #fff; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 15px #00b4d8; margin-bottom: 5px; }
+        .brand-tag { font-size: 14px; color: #00b4d8; font-weight: bold; margin-bottom: 20px; letter-spacing: 2px; text-transform: uppercase; }
+        
+        .bot-desc { font-size: 13px; color: #9ca3af; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border-left: 3px solid #7209b7; text-align: left; margin-bottom: 25px; line-height: 1.5; }
+        
+        label { display: block; text-align: left; font-size: 12px; color: #9ca3af; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        input { width: 100%; padding: 18px; background: #020617; border: 1px solid rgba(0, 180, 216, 0.4); border-radius: 14px; color: #fff; font-size: 18px; text-align: center; font-weight: bold; outline: none; transition: 0.3s; }
+        input:focus { border-color: #00b4d8; box-shadow: 0 0 15px rgba(0, 180, 216, 0.4); }
+        
+        button { width: 100%; padding: 18px; background: linear-gradient(135deg, #0077b6, #7209b7); border: none; border-radius: 14px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; box-shadow: 0 5px 20px rgba(114, 9, 183, 0.3); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 25px #00b4d8; }
+        button:disabled { background: #374151; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Real-Time Processing Status */
+        .status-box { display: none; margin-top: 25px; text-align: left; background: #020617; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; }
+        .status-line { font-size: 12px; margin-bottom: 8px; color: #6b7280; display: flex; align-items: center; gap: 8px; }
+        .status-line.active { color: #00b4d8; font-weight: bold; }
+        .status-line.done { color: #10b981; }
+        .spinner { width: 12px; height: 12px; border: 2px solid #00b4d8; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Result Code Box */
+        .code-box { display: none; margin-top: 25px; background: rgba(16, 185, 129, 0.1); border: 2px dashed #10b981; padding: 25px; border-radius: 14px; animation: fadeIn 0.5s ease-on; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .code-box h2 { font-size: 12px; color: #10b981; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+        .pairing-code { font-size: 32px; font-weight: bold; color: #fff; letter-spacing: 4px; text-shadow: 0 0 15px rgba(255,255,255,0.4); margin-bottom: 15px; }
+        .copy-btn { background: transparent; border: 1px solid #10b981; color: #10b981; box-shadow: none; font-size: 14px; padding: 10px; }
+        .copy-btn:hover { background: #10b981; color: #fff; }
+
+        /* Owner Contact & Rebranding Footer */
+        .contact-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 12px; color: #9ca3af; }
+        .contact-section a { color: #00b4d8; text-decoration: none; font-weight: bold; }
+        .contact-section a:hover { text-decoration: underline; }
+        footer { margin-top: 30px; font-size: 11px; color: #4b5563; letter-spacing: 1px; text-transform: uppercase; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>?? MACHA PAIR</h1>
-        <div class="subtitle">PREMIUM SESSION GENERATOR SYSTEM</div>
-        <p>Weka namba yako ya WhatsApp (Anza na 255)</p>
-        <input type="text" id="phone" placeholder="Mfano: 255612801118">
-        <button id="submitBtn" onclick="requestCode()">Request Code</button>
+
+    <div class="container">
+        <div class="equalizer">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        
+        <h1>MACHA PAIR</h1>
+        <div class="brand-tag">@djmacha255 INTERNAL ECOSYSTEM</div>
+        
+        <div class="bot-desc">
+            🤖 *MACHA BOT ENGINE:* Mfumo rasmi wa usalama na usimamizi wa magenge ya WhatsApp, uendeshaji wa faili, na AI automation. Weka namba yako chini ili kupokea Session ID salama.
+        </div>
+
+        <label for="phone">WhatsApp Number (Weka Code ya Nchi)</label>
+        <div class="input-group">
+            <input type="text" id="phone" placeholder="Mfano: 255612801118">
+        </div>
+        
+        <button id="submitBtn" onclick="generateMachaCode()">Zalisha Code Sasa ⚡</button>
+
+        <!-- LIVE GENERATING STEPS -->
+        <div class="status-box" id="statusBox">
+            <div class="status-line" id="step1">⚪ Kuanzisha muunganisho salama wa Node...</div>
+            <div class="status-line" id="step2">⚪ Kuingiza Itifaki za MACHA-AI...</div>
+            <div class="status-line" id="step3">⚪ Kuvuta Pairing Code kutoka WhatsApp...</div>
+        </div>
+
+        <!-- CODE GENERATION RESULT -->
         <div class="code-box" id="codeBox">
-            <p>Pairing Code Yako Hii Hapa:</p>
+            <h2>Kodi Imepatikana kikamilifu! 🎉</h2>
             <div class="pairing-code" id="pairingCode">---- ----</div>
+            <button class="copy-btn" onclick="copyMachaCode()">Copy Code Yako</button>
+        </div>
+
+        <!-- CONTACT INFO -->
+        <div class="contact-section">
+            📞 Msaada wa Kiufundi? Wasiliana na mtaalamu: <a href="https://wa.me/255612801118" target="_blank">DJ MACHA 255</a>
         </div>
     </div>
-    <footer>� Powered By DJ MACHA 255 ??</footer>
+
+    <footer>© Crafted & Maintained by @djmacha255</footer>
+
     <script>
-        async function requestCode() {
+        async function generateMachaCode() {
             const phone = document.getElementById('phone').value.trim();
-            if(!phone) return alert('Weka namba!');
-            document.getElementById('submitBtn').innerText = 'Inatengeneza... ??';
+            const submitBtn = document.getElementById('submitBtn');
+            const statusBox = document.getElementById('statusBox');
+            const codeBox = document.getElementById('codeBox');
+            
+            if(!phone) return alert('Kiongozi, tafadhali ingiza namba ya simu sahihi!');
+
+            // Washa upya mifumo ya screen layout
+            codeBox.style.display = 'none';
+            statusBox.style.display = 'block';
+            submitBtn.disabled = true;
+
+            // Step 1 Trigger
+            setStepState('step1', 'loading', 'Inatafuta Seva ya Node...');
+
             try {
-                const res = await fetch(`/api/pair?phone=${phone}`);
-                const data = await res.json();
+                // Sogeza loading kimtindo ionekane kiprofessional
+                setTimeout(() => setStepState('step1', 'done', 'Seva ya Node Ipo Active!'), 800);
+                setTimeout(() => setStepState('step2', 'loading', 'Inatungika Itifaki za MACHA-AI...'), 900);
+                setTimeout(() => setStepState('step2', 'done', 'Itifaki Zote Zipo Imara!'), 1700);
+                setTimeout(() => setStepState('step3', 'loading', 'Inavuta Code kutoka WhatsApp...'), 1800);
+
+                const response = await fetch(`/api/pair?phone=${phone}`);
+                const data = await response.json();
+
                 if(data.code) {
-                    document.getElementById('pairingCode').innerText = data.code;
-                    document.getElementById('codeBox').style.display = 'block';
+                    setTimeout(() => {
+                        setStepState('step3', 'done', 'Kodi Imethibitishwa!');
+                        document.getElementById('pairingCode').innerText = data.code;
+                        codeBox.style.display = 'block';
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Zalisha Code Sasa ⚡';
+                    }, 2200);
+                } else {
+                    resetSystem('Imefeli! Angalia namba yako.');
                 }
-            } catch (err) { alert('Imefeli!'); }
-            document.getElementById('submitBtn').innerText = 'Request Code';
+            } catch (err) {
+                resetSystem('Hitilafu ya mtandao kwenye seva.');
+            }
+        }
+
+        function setStepState(stepId, state, text) {
+            const element = document.getElementById(stepId);
+            if(state === 'loading') {
+                element.className = 'status-line active';
+                element.innerHTML = `<div class="spinner"></div> ${text}`;
+            } else if(state === 'done') {
+                element.className = 'status-line done';
+                element.innerHTML = `🟢 ${text}`;
+            }
+        }
+
+        function resetSystem(msg) {
+            alert(msg);
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerText = 'Zalisha Code Sasa ⚡';
+            document.getElementById('statusBox').style.display = 'none';
+        }
+
+        function copyMachaCode() {
+            const codeText = document.getElementById('pairingCode').innerText;
+            navigator.clipboard.writeText(codeText);
+            alert('Kodi imenakiliwa (Copied)! Nenda kaiweke kwenye WhatsApp yako kiongozi. 📋');
         }
     </script>
 </body>
